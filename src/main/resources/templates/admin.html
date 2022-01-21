@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<title>FoodBox</title>
+</head>
+<body>
+	<!-- NAV  -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/}">Foodbox</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/}">Home</a></li>
+					<li class="nav-item"><a class="nav-link active"
+						th:href="@{/admin}">Admin Console</a></li>
+				</ul>
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="navbarUsers">
+					<li class="nav-item"
+						th:if="${#authorization.expression('isAuthenticated()')}"><a
+						class="nav-link">Hi
+							[[${#request.userPrincipal.principal.name}]]</a></li>
+					<li class="nav-item"
+						th:if="${#authorization.expression('isAuthenticated()')}">
+						<form th:action="@{/logout}" method="post">
+							<button type="submit" class="btn btn-primary">Sign Out</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div style="width: 100%; text-align: center">
+			<div class="spinner-border text-info" role="status" id="load-spinner"
+				style="margin: auto"></div>
+		</div>
+		<div id="table-wrapper" style="display: none">
+			<table class="table caption-top" id="product-table">
+				<div style="width: 100%; text-align: center">
+					<h1>Products</h1>
+				</div>
+				<caption>
+					<form class="row g-3" id="product-filter-form">
+						<div class="col-auto">
+							<a class="btn btn-info" th:href="@{/admin/add/product}">Add
+								new product</a>
+						</div>
+						<div class="col-auto">
+							<input class="form-control form-control-sm" type="text"
+								placeholder="filter products by name" id="product-name-search"
+								name="product-name-filter" />
+						</div>
+						<div class="col-auto">
+							<select class="form-select form-select-sm" type="text"
+								placeholder="search product by name" id="product-cuisine-select"
+								name="product-cuisine-filter">
+								<option selected>filter products by cuisine</option>
+							</select>
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-sm btn-danger" id="clear-filters">
+								clear filters</button>
+						</div>
+
+					</form>
+
+				</caption>
+				<thead>
+					<tr>
+						<th style="width: 10%">ID <br>
+							<button class="btn btn-sm sort-asc" name="id">&and;</button>
+							<button class="btn btn-sm sort-desc" name="id">&or;</button>
+						</th>
+						<th style="width: 40%">Product <br>
+							<button class="btn btn-sm sort-asc" name="name">&and;</button>
+							<button class="btn btn-sm sort-desc" name="name">&or;</button>
+						</th>
+						<th style="width: 10%">Price <br>
+							<button class="btn btn-sm sort-asc" name="price">&and;</button>
+							<button class="btn btn-sm sort-desc" name="price">&or;</button>
+						</th>
+						<th style="width: 10%">Discount <br>
+							<button class="btn btn-sm sort-asc" name="discount">&and;</button>
+							<button class="btn btn-sm sort-desc" name="discount">&or;</button>
+						</th>
+						<th style="width: 15%">Cuisine <br>
+							<button class="btn btn-sm sort-asc" name="cuisine">&and;</button>
+							<button class="btn btn-sm sort-desc" name="cuisine">&or;</button>
+						</th>
+						<th style="width: 15%">Enabled <br>
+							<button class="btn btn-sm sort-asc" name="cuisine">&and;</button>
+							<button class="btn btn-sm sort-desc" name="cuisine">&or;</button>
+						</th>
+						<th style="width: 10%">Update item <br></th>
+					</tr>
+				</thead>
+				<tbody id="product-table-body"></tbody>
+			</table>
+			<table class="table caption-top" id="cuisine-table">
+				<div style="width: 100%; text-align: center">
+					<h1>Cuisines</h1>
+				</div>
+				<caption>
+					<form class="row g-3">
+						<div class="col-auto">
+							<a class="btn btn-info" th:href="@{/admin/add/cuisine}">Add
+								new cuisine</a>
+						</div>
+					</form>
+
+				</caption>
+				<thead>
+					<tr>
+						<th style="width: 30%">ID</th>
+						<th style="width: 60%">Cuisine</th>
+						<th style="width: 10%">Update item <br></th>
+					</tr>
+				</thead>
+				<tbody id="cuisine-table-body"></tbody>
+			</table>
+		</div>
+
+	</div>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/script.js"></script>
+	<script src="js/admin.js"></script>
+</body>
+</html>
